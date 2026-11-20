@@ -1,0 +1,21 @@
+[project]
+name = "edgar"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Mitchel Rabsatt", email = "mitchelrabsatt@gmail.com" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "boto3>=1.44.8",
+    "langchain>=1.5.2",
+    "yfinance>=1.8.0",
+]
+
+[project.scripts]
+edgar = "edgar:main"
+
+[build-system]
+requires = ["uv_build>=0.13.6,<0.14.0"]
+build-backend = "uv_build"

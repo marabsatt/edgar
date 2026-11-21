@@ -16,7 +16,7 @@ SECTION_PATTERNS = {
     ),
 }
 
-EMAIL = os.getenv('email')
+EMAIL = os.environ.get('EMAIL')
 
 
 def extract_sections(url: str, max_chars: int = 15_000) -> dict[str, str]:
@@ -28,7 +28,7 @@ def extract_sections(url: str, max_chars: int = 15_000) -> dict[str, str]:
     """
     response = requests.get(
         url,
-        headers={f"User-Agent": "SecResearchAssistant {email}"},
+        headers={f"User-Agent": "SecResearchAssistant {EMAIL}"},
     )
     response.raise_for_status()
     soup = BeautifulSoup(response.text, "html.parser")
@@ -81,5 +81,5 @@ def url_to_pdf(url: str, output_path: str):
 if __name__ == "__main__":
     filing_url = get_latest_ten_k_url("MSFT")
     url_to_pdf(url = filing_url,
-               output_path = "/Users/mitchelrabsatt/Developer/edgar/backend/MSFT_10K.pdf")
+               output_path = "/Users/mitchelrabsatt/Developer/edgar/src/edgar/filings/MSFT_10K.pdf")
     print(extract_sections(filing_url))

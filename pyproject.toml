@@ -12,6 +12,7 @@ dependencies = [
     "diagrams>=0.25.1",
     "langchain>=1.5.2",
     "playwright>=1.65.2",
+    "python-dotenv>=1.2.1",
     "yfinance>=1.8.0",
 ]
 

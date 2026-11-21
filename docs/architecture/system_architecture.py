@@ -12,7 +12,7 @@ from diagrams.aws.integration import Eventbridge
 
 OUTPUT = Path(__file__).resolve().with_name("system_architecture")
 GRAPH = {
-    "splines": "polyline",  # Switched from ortho so edge labels render cleanly
+    "splines": "polyline",  
     "nodesep": "0.60",
     "ranksep": "0.90",
     "pad": "0.35",

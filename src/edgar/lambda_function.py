@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 if __package__:
-    from .sec_tool import extract_sections, get_latest_ten_k_url, url_to_pdf
+    from .sec_tool.sec_tool import extract_sections, get_latest_ten_k_url, url_to_pdf
 else:
     from sec_tool import extract_sections, get_latest_ten_k_url, url_to_pdf
 

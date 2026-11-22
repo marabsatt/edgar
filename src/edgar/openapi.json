@@ -1,0 +1,92 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "SEC 10-K Filings Retrieval API",
+    "version": "1.0.0",
+    "description": "Fetches the latest Form 10-K filing from SEC EDGAR for a given stock ticker, extracts key sections, and archives the PDF to S3 for Knowledge Base ingestion."
+  },
+  "paths": {
+    "/fetch-sec-filing": {
+      "post": {
+        "operationId": "fetchSecFiling",
+        "summary": "Fetch and ingest the latest 10-K SEC filing for a stock ticker",
+        "description": "Use this tool ONLY when the requested company's Form 10-K filing is not found in the Knowledge Base. Retrieves the latest 10-K from SEC EDGAR by stock ticker, extracts key narrative sections (Business, Risk Factors, MD&A, Market Risk) for immediate analysis, and uploads the full PDF to S3.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FetchFilingRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved 10-K sections and stored raw PDF in S3",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FetchFilingResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid or missing stock ticker parameter"
+          },
+          "500": {
+            "description": "Internal error fetching or parsing the SEC filing"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "FetchFilingRequest": {
+        "type": "object",
+        "required": ["ticker"],
+        "properties": {
+          "ticker": {
+            "type": "string",
+            "description": "Official US stock ticker symbol in uppercase (e.g., MSFT, AAPL, NVDA)"
+          }
+        }
+      },
+      "FetchFilingResponse": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string",
+            "description": "Normalized uppercase stock ticker symbol"
+          },
+          "filing_url": {
+            "type": "string",
+            "description": "Source SEC EDGAR URL of the retrieved Form 10-K"
+          },
+          "pdf": {
+            "type": "object",
+            "properties": {
+              "bucket": {
+                "type": "string",
+                "description": "Target S3 bucket where the PDF was archived"
+              },
+              "key": {
+                "type": "string",
+                "description": "S3 object key of the archived 10-K PDF"
+              }
+            }
+          },
+          "sections": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Dictionary mapping extracted 10-K section titles to their text content"
+          }
+        }
+      }
+    }
+  }
+}
